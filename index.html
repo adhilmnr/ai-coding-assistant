@@ -3,103 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Coding Assistant</title>
+  <title>CodeGenius AI Assistant</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Import React -->
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Import Babel for JSX -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- Import Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Import Highlight.js for better code highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <!-- Add common language support -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/rust.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/swift.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/kotlin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/csharp.min.js"></script>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-content">
-        <div class="logo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-          <h1>AI Coding Assistant</h1>
-        </div>
-      </div>
-    </header>
-    
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Chat Panel -->
-      <div class="chat-panel" id="chat-panel">
-        <div class="messages" id="messages">
-          <div class="message bot">
-            <div class="message-bubble">
-              <div class="message-header">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <circle cx="12" cy="10" r="3"></circle>
-                  <path d="M7 16.3c0-1 2.5-1.9 5-1.9s5 .9 5 1.9"></path>
-                </svg>
-                <span class="font-semibold">Coding Assistant</span>
-              </div>
-              <div class="message-content">
-                Hello! I'm your AI Coding Assistant. I can help you with code generation, analysis, and improvement suggestions for multiple programming languages and frameworks. What would you like to work on today?
-              </div>
-              <div class="message-timestamp">10:00 AM</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="input-area">
-          <button class="suggestions-toggle" id="suggestions-toggle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-            Example queries
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="suggestions-chevron">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          
-          <div class="suggestions-chips" id="suggestions-chips" style="display: none;">
-            <button class="suggestion-chip">Create a React authentication system</button>
-            <button class="suggestion-chip">Generate a Python Flask REST API</button>
-            <button class="suggestion-chip">Help me optimize my database queries</button>
-            <button class="suggestion-chip">Create a responsive navigation component</button>
-            <button class="suggestion-chip">Build a Node.js Express API with MongoDB</button>
-          </div>
-          
-          <form class="input-form" id="chat-form">
-            <input
-              type="text"
-              id="chat-input"
-              placeholder="Ask me to create, explain, or improve code..."
-              class="input-field"
-            />
-            <button
-              type="submit"
-              class="send-button"
-              id="send-button"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="app-footer">
-      <div class="footer-logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 18 22 12 16 6"></polyline>
-          <polyline points="8 6 2 12 8 18"></polyline>
-        </svg>
-        <span>AI Coding Assistant</span>
-      </div>
-    </footer>
-  </div>
-
-<script src="app-part1.js"></script>
-<script src="app-part2.js"></script>
-<script src="app-part3.js"></script>
+  <div id="root"></div>
   
+  <!-- Main App Scripts -->
+  <script type="text/babel" src="components/ui.js"></script>
+  <script type="text/babel" src="components/chat.js"></script>
+  <script type="text/babel" src="components/code.js"></script>
+  <script type="text/babel" src="app.js"></script>
 </body>
 </html>
