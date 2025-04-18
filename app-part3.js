@@ -1,61 +1,4 @@
-// Add user message to chat
-  function addUserMessage(text) {
-    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message user';
-    messageDiv.innerHTML = `
-      <div class="message-bubble">
-        <div class="message-header">
-          <span class="font-semibold">You</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <div class="message-content">
-          ${text}
-        </div>
-        <div class="message-timestamp">
-          ${timestamp}
-        </div>
-      </div>
-    `;
-    
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  }
-
-  // Add bot message to chat
-  function addBotMessage(text) {
-    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message bot';
-    messageDiv.innerHTML = `
-      <div class="message-bubble">
-        <div class="message-header">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <circle cx="12" cy="10" r="3"></circle>
-            <path d="M7 16.3c0-1 2.5-1.9 5-1.9s5 .9 5 1.9"></path>
-          </svg>
-          <span class="font-semibold">Coding Assistant</span>
-        </div>
-        <div class="message-content">
-          ${renderMessageContent(text)}
-        </div>
-        <div class="message-timestamp">
-          ${timestamp}
-        </div>
-      </div>
-    `;
-    
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  }
-
-  // Show typing indicator
+// Show typing indicator
   function showTypingIndicator() {
     isTyping = true;
     
@@ -90,14 +33,6 @@
     isTyping = false;
   }
 
-  // Analyze button
-  analyzeButton.addEventListener('click', function() {
-    addBotMessage(`### Code Analysis for ${files[currentFileId].name}\n\n#### Suggestions:\n- 🟠 Consider adding proper documentation/comments to your code.\n- 🔵 You could improve error handling in your asynchronous operations.\n\n#### Recommended Improvements:\n- Add JSDoc comments for better code documentation\n- Use try/catch blocks for better error handling\n\nI've prepared an improved version of your code. Would you like me to implement these changes?`);
-    
-    // Switch to chat tab to show the analysis
-    setActiveTab('chat');
-  });
-
   // Chat form submission
   chatForm.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -125,5 +60,4 @@
       }
     }, 1500);
   });
-  
 });
