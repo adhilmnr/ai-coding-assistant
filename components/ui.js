@@ -193,6 +193,136 @@ function getSuggestedQueries(projectType, tag) {
         "How does the JavaScript event loop work?"
       ],
       debug: [
+        "Debug my React useEffect infinite loop",
+        "Fix CORS issues in my fetch request",
+        "Why is my state not updating in React?",
+        "Debug z-index issues in my CSS"
+      ],
+      optimize: [
+        "Optimize my React component rendering",
+        "How to lazy load images in a web app",
+        "Improve my website performance score",
+        "Reduce bundle size in my webpack project"
+      ]
+    },
+    mobile: {
+      code: [
+        "Create a bottom tab navigator in React Native",
+        "Build a login screen in Flutter",
+        "Generate a custom UI component in SwiftUI",
+        "Create a list with pull-to-refresh in Kotlin"
+      ],
+      explain: [
+        "Explain React Native lifecycle methods",
+        "How does Flutter state management work?",
+        "What are Swift protocols?",
+        "Explain Kotlin coroutines"
+      ],
+      debug: [
+        "Debug layout issues in React Native",
+        "Fix memory leaks in my Android app",
+        "Why is my Flutter animation choppy?",
+        "Debug navigation stack issues in iOS"
+      ],
+      optimize: [
+        "Optimize React Native app startup time",
+        "Reduce APK size for my Android app",
+        "Improve Flutter performance",
+        "Optimize battery usage in my mobile app"
+      ]
+    },
+    backend: {
+      code: [
+        "Create a RESTful API with Express.js",
+        "Build a Django model with relationships",
+        "Write a GraphQL schema with resolvers",
+        "Create a PostgreSQL database migration"
+      ],
+      explain: [
+        "Explain Node.js event emitters",
+        "How does Django ORM work?",
+        "What is dependency injection in Spring?",
+        "Explain database indexing strategies"
+      ],
+      debug: [
+        "Debug memory leaks in my Node.js app",
+        "Fix database connection pooling issues",
+        "Why is my API request timing out?",
+        "Debug authentication middleware problems"
+      ],
+      optimize: [
+        "Optimize database queries in my app",
+        "How to implement caching for my API",
+        "Scale my backend service horizontally",
+        "Improve throughput for my message queue"
+      ]
+    },
+    data: {
+      code: [
+        "Create a data cleaning pipeline with pandas",
+        "Build a machine learning model with scikit-learn",
+        "Write a SQL query to analyze user behavior",
+        "Generate a visualization with matplotlib"
+      ],
+      explain: [
+        "Explain gradient descent algorithm",
+        "How does TF-IDF work?",
+        "What is the difference between SQL and NoSQL?",
+        "Explain random forests vs gradient boosting"
+      ],
+      debug: [
+        "Debug out-of-memory issues in my pandas script",
+        "Fix dimensionality issues in my ML model",
+        "Why is my data pipeline slow?",
+        "Debug overfitting in my neural network"
+      ],
+      optimize: [
+        "Optimize pandas operations for large datasets",
+        "How to parallelize data processing",
+        "Improve training time for my ML model",
+        "Reduce memory usage in my data pipeline"
+      ]
+    },
+    game: {
+      code: [
+        "Create a player controller in Unity",
+        "Build a collision detection system in C++",
+        "Generate a procedural level generator",
+        "Create an entity component system"
+      ],
+      explain: [
+        "Explain game physics engines",
+        "How does pathfinding with A* work?",
+        "What is the game loop?",
+        "Explain sprite batching in 2D games"
+      ],
+      debug: [
+        "Debug collision detection issues",
+        "Fix frame rate drops in my game",
+        "Why is my character falling through the floor?",
+        "Debug memory leaks in my game engine"
+      ],
+      optimize: [
+        "Optimize rendering for my 3D game",
+        "How to implement level of detail (LOD)",
+        "Improve load times for game assets",
+        "Reduce memory usage in my Unity game"
+      ]
+    },
+    desktop: {
+      code: [
+        "Create an Electron app with IPC communication",
+        "Build a WPF user interface with MVVM",
+        "Generate a PyQt desktop app",
+        "Create a Java Swing application"
+      ],
+      explain: [
+        "Explain Electron's main and renderer processes",
+        "How does WPF data binding work?",
+        "What is the Qt signal-slot mechanism?",
+        "Explain JavaFX property binding"
+      ],
+      debug: [
         "Debug memory issues in my Electron app",
         "Fix UI rendering problems in WPF",
         "Why is my PyQt app freezing on startup?",
@@ -326,134 +456,4 @@ function getSuggestedQueries(projectType, tag) {
   
   // Return project-specific suggestions if available, otherwise default suggestions
   return suggestions[projectType]?.[tag] || defaultSuggestions[tag];
-} my React useEffect infinite loop",
-        "Fix CORS issues in my fetch request",
-        "Why is my state not updating in React?",
-        "Debug z-index issues in my CSS"
-      ],
-      optimize: [
-        "Optimize my React component rendering",
-        "How to lazy load images in a web app",
-        "Improve my website performance score",
-        "Reduce bundle size in my webpack project"
-      ]
-    },
-    mobile: {
-      code: [
-        "Create a bottom tab navigator in React Native",
-        "Build a login screen in Flutter",
-        "Generate a custom UI component in SwiftUI",
-        "Create a list with pull-to-refresh in Kotlin"
-      ],
-      explain: [
-        "Explain React Native lifecycle methods",
-        "How does Flutter state management work?",
-        "What are Swift protocols?",
-        "Explain Kotlin coroutines"
-      ],
-      debug: [
-        "Debug layout issues in React Native",
-        "Fix memory leaks in my Android app",
-        "Why is my Flutter animation choppy?",
-        "Debug navigation stack issues in iOS"
-      ],
-      optimize: [
-        "Optimize React Native app startup time",
-        "Reduce APK size for my Android app",
-        "Improve Flutter performance",
-        "Optimize battery usage in my mobile app"
-      ]
-    },
-    backend: {
-      code: [
-        "Create a RESTful API with Express.js",
-        "Build a Django model with relationships",
-        "Write a GraphQL schema with resolvers",
-        "Create a PostgreSQL database migration"
-      ],
-      explain: [
-        "Explain Node.js event emitters",
-        "How does Django ORM work?",
-        "What is dependency injection in Spring?",
-        "Explain database indexing strategies"
-      ],
-      debug: [
-        "Debug memory leaks in my Node.js app",
-        "Fix database connection pooling issues",
-        "Why is my API request timing out?",
-        "Debug authentication middleware problems"
-      ],
-      optimize: [
-        "Optimize database queries in my app",
-        "How to implement caching for my API",
-        "Scale my backend service horizontally",
-        "Improve throughput for my message queue"
-      ]
-    },
-    data: {
-      code: [
-        "Create a data cleaning pipeline with pandas",
-        "Build a machine learning model with scikit-learn",
-        "Write a SQL query to analyze user behavior",
-        "Generate a visualization with matplotlib"
-      ],
-      explain: [
-        "Explain gradient descent algorithm",
-        "How does TF-IDF work?",
-        "What is the difference between SQL and NoSQL?",
-        "Explain random forests vs gradient boosting"
-      ],
-      debug: [
-        "Debug out-of-memory issues in my pandas script",
-        "Fix dimensionality issues in my ML model",
-        "Why is my data pipeline slow?",
-        "Debug overfitting in my neural network"
-      ],
-      optimize: [
-        "Optimize pandas operations for large datasets",
-        "How to parallelize data processing",
-        "Improve training time for my ML model",
-        "Reduce memory usage in my data pipeline"
-      ]
-    },
-    game: {
-      code: [
-        "Create a player controller in Unity",
-        "Build a collision detection system in C++",
-        "Generate a procedural level generator",
-        "Create an entity component system"
-      ],
-      explain: [
-        "Explain game physics engines",
-        "How does pathfinding with A* work?",
-        "What is the game loop?",
-        "Explain sprite batching in 2D games"
-      ],
-      debug: [
-        "Debug collision detection issues",
-        "Fix frame rate drops in my game",
-        "Why is my character falling through the floor?",
-        "Debug memory leaks in my game engine"
-      ],
-      optimize: [
-        "Optimize rendering for my 3D game",
-        "How to implement level of detail (LOD)",
-        "Improve load times for game assets",
-        "Reduce memory usage in my Unity game"
-      ]
-    },
-    desktop: {
-      code: [
-        "Create an Electron app with IPC communication",
-        "Build a WPF user interface with MVVM",
-        "Generate a PyQt desktop app",
-        "Create a Java Swing application"
-      ],
-      explain: [
-        "Explain Electron's main and renderer processes",
-        "How does WPF data binding work?",
-        "What is the Qt signal-slot mechanism?",
-        "Explain JavaFX property binding"
-      ],
-      debug: [
-        "Debug
+}
