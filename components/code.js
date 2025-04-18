@@ -51,589 +51,7 @@ const LANGUAGE_METADATA = {
   // Backend Development
   'Node.js': {
     fileExtension: '.js',
-    template: 'const express = require(\'express\');\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});',
-    frameworks: ['Express', 'Koa', 'Nest.js'],
-    common: ['API routes', 'Authentication', 'Database integration']
-  },
-  Python: {
-    fileExtension: '.py',
-    template: '# Python code\n',
-    frameworks: ['Django', 'Flask', 'FastAPI', 'TensorFlow', 'PyTorch'],
-    common: ['Data processing', 'Web scraping', 'API integration']
-  },
-  Java: {
-    fileExtension: '.java',
-    template: 'public class Main {\n  public static void main(String[] args) {\n    \n  }\n}',
-    frameworks: ['Spring Boot', 'Hibernate', 'Android'],
-    common: ['Object-oriented design', 'Concurrency', 'Enterprise applications']
-  },
-  'C#': {
-    fileExtension: '.cs',
-    template: 'using System;\n\nnamespace MyApp {\n  class Program {\n    static void Main(string[] args) {\n      \n    }\n  }\n}',
-    frameworks: ['.NET Core', 'ASP.NET', 'Entity Framework'],
-    common: ['LINQ', 'Async/await', 'Windows apps']
-  },
-  Go: {
-    fileExtension: '.go',
-    template: 'package main\n\nimport "fmt"\n\nfunc main() {\n  \n}',
-    common: ['Concurrency', 'Microservices', 'Web servers']
-  },
-  // Data Science
-  R: {
-    fileExtension: '.R',
-    template: '# R script\n',
-    common: ['Statistical analysis', 'Data visualization', 'Machine learning']
-  },
-  SQL: {
-    fileExtension: '.sql',
-    template: '-- SQL query\n',
-    common: ['Queries', 'Database design', 'Performance optimization']
-  },
-  // Game Development
-  'Unity/C#': {
-    fileExtension: '.cs',
-    template: 'using UnityEngine;\n\npublic class PlayerController : MonoBehaviour {\n  void Start() {\n    \n  }\n\n  void Update() {\n    \n  }\n}',
-    common: ['Game mechanics', 'Physics', 'Animation']
-  },
-  'Unreal/C++': {
-    fileExtension: '.cpp',
-    template: '#include "MyClass.h"\n\nAMyClass::AMyClass() {\n  \n}\n\nvoid AMyClass::BeginPlay() {\n  Super::BeginPlay();\n}',
-    common: ['Blueprints', 'Character controllers', 'Game AI']
-  },
-  // DevOps
-  Docker: {
-    fileExtension: 'Dockerfile',
-    template: 'FROM node:14\nWORKDIR /app\nCOPY . .\nRUN npm install\nEXPOSE 3000\nCMD ["npm", "start"]',
-    common: ['Containerization', 'Multi-stage builds', 'Docker Compose']
-  },
-  Kubernetes: {
-    fileExtension: '.yaml',
-    template: 'apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: my-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: my-app\n  template:\n    metadata:\n      labels:\n        app: my-app\n    spec:\n      containers:\n      - name: my-app\n        image: my-app:latest',
-    common: ['Pod management', 'Service discovery', 'Helm charts']
-  },
-  Terraform: {
-    fileExtension: '.tf',
-    template: 'provider "aws" {\n  region = "us-west-2"\n}\n\nresource "aws_instance" "example" {\n  ami           = "ami-0c55b159cbfafe1f0"\n  instance_type = "t2.micro"\n}',
-    common: ['Infrastructure as code', 'Cloud providers', 'State management']
-  },
-  // Blockchain
-  Solidity: {
-    fileExtension: '.sol',
-    template: 'pragma solidity ^0.8.0;\n\ncontract MyContract {\n  \n}',
-    common: ['Smart contracts', 'Ethereum', 'Token standards']
-  }
-};
-
-// Code analysis function - Analyzes code and provides suggestions
-function analyzeCode(code, language) {
-  let suggestions = [];
-  
-  // Common issues across languages
-  if (code.includes('TODO') || code.includes('FIXME')) {
-    suggestions.push({
-      type: 'info',
-      message: 'There are TODO comments in the code that should be addressed.'
-    });
-  }
-  
-  // Check for common issues in specific languages
-  switch (language.toLowerCase()) {
-    case 'javascript':
-    case 'typescript':
-      // Check for console.log statements
-      if (/console\.log\(/.test(code)) {
-        suggestions.push({
-          type: 'warning',
-          message: 'Remove console.log statements before production deployment.'
-        });
-      }
-      
-      // Check for var usage
-      if (/\bvar\b/.test(code)) {
-        suggestions.push({
-          type: 'suggestion',
-          message: 'Consider using const or let instead of var for better scoping.'
-        });
-      }
-      
-      // Check for potential memory leaks in event listeners
-      if (/addEventListener\(/.test(code) && !/removeEventListener\(/.test(code)) {
-        suggestions.push({
-          type: 'warning',
-          message: 'Event listeners are added but not removed, which could cause memory leaks.'
-        });
-      }
-      break;
-      
-    case 'python':
-      // Check for print statements
-      if (/print\(/.test(code)) {
-        suggestions.push({
-          type: 'info',
-          message: 'Consider using a logging library instead of print statements.'
-        });
-      }
-      
-      // Check for bare except clauses
-      if (/except:/.test(code)) {
-        suggestions.push({
-          type: 'warning',
-          message: 'Avoid bare except clauses, specify the exceptions you want to catch.'
-        });
-      }
-      break;
-      
-    case 'java':
-    case 'c#':
-      // Check for empty catch blocks
-      if (/catch\s*\([^)]+\)\s*\{\s*\}/.test(code)) {
-        suggestions.push({
-          type: 'warning',
-          message: 'Empty catch blocks suppress exceptions without handling them.'
-        });
-      }
-      break;
-      
-    case 'css':
-      // Check for !important
-      if (/!important/.test(code)) {
-        suggestions.push({
-          type: 'suggestion',
-          message: 'Avoid using !important as it makes styles harder to override.'
-        });
-      }
-      break;
-  }
-  
-  return suggestions;
-}
-
-// Code improvement function - Suggests improvements for code
-function improveCode(code, language) {
-  let improved = code;
-  let improvements = [];
-  
-  // Language-specific improvements
-  switch (language.toLowerCase()) {
-    case 'javascript':
-    case 'typescript':
-      // Replace var with const where possible
-      if (/\bvar\b/.test(code)) {
-        improved = improved.replace(/var\s+([a-zA-Z0-9_$]+)(\s*=\s*[^;]+);/g, 'const $1$2;');
-        improvements.push("Replaced 'var' with 'const' for better variable scoping");
-      }
-      
-      // Add semicolons if missing
-      if (/}\n(let|const|var|function|class)/.test(code)) {
-        improved = improved.replace(/}(\s*\n\s*)(let|const|var|function|class)/g, '};\n$2');
-        improvements.push("Added missing semicolons");
-      }
-      break;
-      
-    case 'python':
-      // Add docstrings if missing
-      if (/def\s+\w+\([^)]*\):\s*\n\s+[^\s#]/.test(code)) {
-        improved = improved.replace(
-          /(def\s+\w+\([^)]*\):\s*\n)(\s+[^\s#])/g, 
-          '$1$2    """\n    Description of function\n    """\n$2'
-        );
-        improvements.push("Added docstring templates to functions");
-      }
-      break;
-      
-    case 'css':
-      // Replace px with rem for better accessibility
-      if (/\d+px/.test(code)) {
-        improved = improved.replace(/(\d+)px/g, function(match, p1) {
-          return (parseInt(p1) / 16) + 'rem';
-        });
-        improvements.push("Converted px units to rem for better accessibility");
-      }
-      break;
-  }
-  
-  return {
-    improvedCode: improved,
-    improvements
-  };
-}
-
-// Code generator function - Generates code based on query and language
-function generateCode(query, language, projectType) {
-  // Detect intent from query
-  const intent = detectIntent(query);
-  
-  // Get language metadata
-  const langData = LANGUAGE_METADATA[language] || {
-    fileExtension: '.txt',
-    template: '',
-    common: []
-  };
-  
-  // Generate appropriate code based on intent
-  let generatedCode = '';
-  
-  switch (intent) {
-    case 'component':
-      if (language === 'React' || language === 'JavaScript' || language === 'TypeScript') {
-        generatedCode = generateReactComponent(query);
-      } else if (language === 'Vue') {
-        generatedCode = generateVueComponent(query);
-      } else if (language === 'Angular') {
-        generatedCode = generateAngularComponent(query);
-      } else if (language === 'Flutter') {
-        generatedCode = generateFlutterWidget(query);
-      } else if (language === 'Swift') {
-        generatedCode = generateSwiftUIView(query);
-      }
-      break;
-      
-    case 'api':
-      if (language === 'Node.js' || language === 'JavaScript') {
-        generatedCode = generateNodeAPI(query);
-      } else if (language === 'Python') {
-        generatedCode = generatePythonAPI(query);
-      } else if (language === 'Java') {
-        generatedCode = generateJavaAPI(query);
-      } else if (language === 'Go') {
-        generatedCode = generateGoAPI(query);
-      }
-      break;
-      
-    case 'database':
-      if (language === 'SQL') {
-        generatedCode = generateSQLQuery(query);
-      } else if (language === 'MongoDB' || language === 'JavaScript') {
-        generatedCode = generateMongoDBQuery(query);
-      }
-      break;
-      
-    default:
-      // Generate a basic template if no specific intent is detected
-      generatedCode = langData.template || '// Generated code\n';
-  }
-  
-  return generatedCode;
-}
-
-// Helper function to detect intent from query
-function detectIntent(query) {
-  query = query.toLowerCase();
-  
-  if (query.includes('component') || query.includes('ui') || query.includes('interface')) {
-    return 'component';
-  } else if (query.includes('api') || query.includes('endpoint') || query.includes('route')) {
-    return 'api';
-  } else if (query.includes('database') || query.includes('query') || query.includes('sql')) {
-    return 'database';
-  } else if (query.includes('function') || query.includes('method')) {
-    return 'function';
-  } else if (query.includes('class') || query.includes('object')) {
-    return 'class';
-  } else {
-    return 'general';
-  }
-}
-
-// Component generators
-function generateReactComponent(query) {
-  return `import React, { useState, useEffect } from 'react';
-
-function MyComponent() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  
-  useEffect(() => {
-    // Fetch data or perform side effects here
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('https://api.example.com/data');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchData();
-  }, []);
-  
-  return (
-    <div className="my-component">
-      <h2>My Component</h2>
-      
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {data.map(item => (
-            <li key={item.id}>
-              {item.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-export default MyComponent;`;
-}
-
-function generateVueComponent(query) {
-  return `<template>
-  <div class="my-component">
-    <h2>My Component</h2>
-    
-    <p v-if="loading">Loading...</p>
-    
-    <ul v-else>
-      <li v-for="item in data" :key="item.id">
-        {{ item.name }}
-      </li>
-    </ul>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'MyComponent',
-  data() {
-    return {
-      data: [],
-      loading: false
-    };
-  },
-  created() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      this.loading = true;
-      try {
-        const response = await fetch('https://api.example.com/data');
-        const result = await response.json();
-        this.data = result;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        this.loading = false;
-      }
-    }
-  }
-};
-</script>
-
-<style scoped>
-.my-component {
-  padding: 1rem;
-}
-</style>`;
-}
-
-function generateAngularComponent(query) {
-  return `import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-interface Item {
-  id: number;
-  name: string;
-}
-
-@Component({
-  selector: 'app-my-component',
-  template: \`
-    <div class="my-component">
-      <h2>My Component</h2>
-      
-      <p *ngIf="loading">Loading...</p>
-      
-      <ul *ngIf="!loading">
-        <li *ngFor="let item of data">
-          {{ item.name }}
-        </li>
-      </ul>
-    </div>
-  \`,
-  styles: [\`
-    .my-component {
-      padding: 1rem;
-    }
-  \`]
-})
-export class MyComponent implements OnInit {
-  data: Item[] = [];
-  loading = false;
-  
-  constructor(private http: HttpClient) {}
-  
-  ngOnInit(): void {
-    this.fetchData();
-  }
-  
-  fetchData(): void {
-    this.loading = true;
-    this.http.get<Item[]>('https://api.example.com/data')
-      .subscribe({
-        next: (result) => {
-          this.data = result;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-          this.loading = false;
-        }
-      });
-  }
-}`;
-}
-
-function generateFlutterWidget(query) {
-  return `import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-class MyWidget extends StatefulWidget {
-  const MyWidget({Key? key}) : super(key: key);
-
-  @override
-  _MyWidgetState createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  List<dynamic> data = [];
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
-    setState(() {
-      isLoading = true;
-    });
-    
-    try {
-      final response = await http.get(Uri.parse('https://api.example.com/data'));
-      
-      if (response.statusCode == 200) {
-        setState(() {
-          data = jsonDecode(response.body);
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'My Widget',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      final item = data[index];
-                      return ListTile(
-                        title: Text(item['name']),
-                      );
-                    },
-                  ),
-                ),
-        ],
-      ),
-    );
-  }
-}`;
-}
-
-function generateSwiftUIView(query) {
-  return `import SwiftUI
-
-struct Item: Codable, Identifiable {
-    let id: Int
-    let name: String
-}
-
-class DataFetcher: ObservableObject {
-    @Published var items = [Item]()
-    @Published var isLoading = false
-    
-    func fetchData() {
-        isLoading = true
-        
-        guard let url = URL(string: "https://api.example.com/data") else {
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                
-                if let data = data {
-                    do {
-                        let decodedData = try JSONDecoder().decode([Item].self, from: data)
-                        self.items = decodedData
-                    } catch {
-                        print("Error decoding data: \(error)")
-                    }
-                }
-            }
-        }.resume()
-    }
-}
-
-struct MyView: View {
-    @StateObject private var dataFetcher = DataFetcher()
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("My View")
-                .font(.title)
-                .padding(.bottom)
-            
-            if dataFetcher.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity, alignment: .center)
-            } else {
-                List(dataFetcher.items) { item in
-                    Text(item.name)
-                }
-            }
-        }
-        .padding()
-        .onAppear {
-            dataFetcher.fetchData()
-        }
-    }
-}`;
-}
-
-// API generators
-function generateNodeAPI(query) {
-  return `const express = require('express');
+    template: 'const express = require('express');
 const router = express.Router();
 
 /**
@@ -1242,5 +660,1833 @@ db.items.aggregate([
 db.items.createIndex({ name: 1 });
 
 // Create a compound index
-db.items.createIndex({ tags: 1, createdAt: -1 });`;
+db.items.createIndex({ tags: 1, createdAt: -1 });
+};
+
+// Additional helper functions for specialized code generation
+function generateFormValidation(language) {
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'typescript':
+      return `function validateForm(formData) {
+  const errors = {};
+  
+  // Name validation
+  if (!formData.name) {
+    errors.name = 'Name is required';
+  } else if (formData.name.length < 2) {
+    errors.name = 'Name must be at least 2 characters long';
+  }
+  
+  // Email validation
+  if (!formData.email) {
+    errors.email = 'Email is required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
+    errors.email = 'Invalid email address';
+  }
+  
+  // Password validation
+  if (!formData.password) {
+    errors.password = 'Password is required';
+  } else if (formData.password.length < 8) {
+    errors.password = 'Password must be at least 8 characters';
+  } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(formData.password)) {
+    errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+  }
+  
+  // Confirm password validation
+  if (formData.password !== formData.confirmPassword) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
+  
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
+}`;
+
+    case 'python':
+      return `import re
+
+def validate_form(form_data):
+    """
+    Validate form data
+    
+    Args:
+        form_data (dict): Dictionary containing form fields
+        
+    Returns:
+        tuple: (is_valid, errors)
+    """
+    errors = {}
+    
+    # Name validation
+    if 'name' not in form_data or not form_data['name']:
+        errors['name'] = 'Name is required'
+    elif len(form_data['name']) < 2:
+        errors['name'] = 'Name must be at least 2 characters long'
+    
+    # Email validation
+    if 'email' not in form_data or not form_data['email']:
+        errors['email'] = 'Email is required'
+    elif not re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}(\'express\');\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});',
+    frameworks: ['Express', 'Koa', 'Nest.js'],
+    common: ['API routes', 'Authentication', 'Database integration']
+  },
+  Python: {
+    fileExtension: '.py',
+    template: '# Python code\n',
+    frameworks: ['Django', 'Flask', 'FastAPI', 'TensorFlow', 'PyTorch'],
+    common: ['Data processing', 'Web scraping', 'API integration']
+  },
+  Java: {
+    fileExtension: '.java',
+    template: 'public class Main {\n  public static void main(String[] args) {\n    \n  }\n}',
+    frameworks: ['Spring Boot', 'Hibernate', 'Android'],
+    common: ['Object-oriented design', 'Concurrency', 'Enterprise applications']
+  },
+  'C#': {
+    fileExtension: '.cs',
+    template: 'using System;\n\nnamespace MyApp {\n  class Program {\n    static void Main(string[] args) {\n      \n    }\n  }\n}',
+    frameworks: ['.NET Core', 'ASP.NET', 'Entity Framework'],
+    common: ['LINQ', 'Async/await', 'Windows apps']
+  },
+  Go: {
+    fileExtension: '.go',
+    template: 'package main\n\nimport "fmt"\n\nfunc main() {\n  \n}',
+    common: ['Concurrency', 'Microservices', 'Web servers']
+  },
+  // Data Science
+  R: {
+    fileExtension: '.R',
+    template: '# R script\n',
+    common: ['Statistical analysis', 'Data visualization', 'Machine learning']
+  },
+  SQL: {
+    fileExtension: '.sql',
+    template: '-- SQL query\n',
+    common: ['Queries', 'Database design', 'Performance optimization']
+  },
+  // Game Development
+  'Unity/C#': {
+    fileExtension: '.cs',
+    template: 'using UnityEngine;\n\npublic class PlayerController : MonoBehaviour {\n  void Start() {\n    \n  }\n\n  void Update() {\n    \n  }\n}',
+    common: ['Game mechanics', 'Physics', 'Animation']
+  },
+  'Unreal/C++': {
+    fileExtension: '.cpp',
+    template: '#include "MyClass.h"\n\nAMyClass::AMyClass() {\n  \n}\n\nvoid AMyClass::BeginPlay() {\n  Super::BeginPlay();\n}',
+    common: ['Blueprints', 'Character controllers', 'Game AI']
+  },
+  // DevOps
+  Docker: {
+    fileExtension: 'Dockerfile',
+    template: 'FROM node:14\nWORKDIR /app\nCOPY . .\nRUN npm install\nEXPOSE 3000\nCMD ["npm", "start"]',
+    common: ['Containerization', 'Multi-stage builds', 'Docker Compose']
+  },
+  Kubernetes: {
+    fileExtension: '.yaml',
+    template: 'apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: my-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: my-app\n  template:\n    metadata:\n      labels:\n        app: my-app\n    spec:\n      containers:\n      - name: my-app\n        image: my-app:latest',
+    common: ['Pod management', 'Service discovery', 'Helm charts']
+  },
+  Terraform: {
+    fileExtension: '.tf',
+    template: 'provider "aws" {\n  region = "us-west-2"\n}\n\nresource "aws_instance" "example" {\n  ami           = "ami-0c55b159cbfafe1f0"\n  instance_type = "t2.micro"\n}',
+    common: ['Infrastructure as code', 'Cloud providers', 'State management']
+  },
+  // Blockchain
+  Solidity: {
+    fileExtension: '.sol',
+    template: 'pragma solidity ^0.8.0;\n\ncontract MyContract {\n  \n}',
+    common: ['Smart contracts', 'Ethereum', 'Token standards']
+  }
+};
+
+// Code analysis function - Analyzes code and provides suggestions
+function analyzeCode(code, language) {
+  let suggestions = [];
+  
+  // Common issues across languages
+  if (code.includes('TODO') || code.includes('FIXME')) {
+    suggestions.push({
+      type: 'info',
+      message: 'There are TODO comments in the code that should be addressed.'
+    });
+  }
+  
+  // Check for common issues in specific languages
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'typescript':
+      // Check for console.log statements
+      if (/console\.log\(/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Remove console.log statements before production deployment.'
+        });
+      }
+      
+      // Check for var usage
+      if (/\bvar\b/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using const or let instead of var for better scoping.'
+        });
+      }
+      
+      // Check for potential memory leaks in event listeners
+      if (/addEventListener\(/.test(code) && !/removeEventListener\(/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Event listeners are added but not removed, which could cause memory leaks.'
+        });
+      }
+      
+      // Check for unused variables
+      const varDeclarations = code.match(/(?:let|const|var)\s+([a-zA-Z0-9_$]+)/g) || [];
+      varDeclarations.forEach(declaration => {
+        const varName = declaration.split(/\s+/)[1];
+        // Simple check - not perfect but catches obvious cases
+        const varNameRegex = new RegExp('\\b' + varName + '\\b', 'g');
+        const occurrences = (code.match(varNameRegex) || []).length;
+        if (occurrences <= 1) {
+          suggestions.push({
+            type: 'info',
+            message: `Variable '${varName}' might be unused.`
+          });
+        }
+      });
+      break;
+      
+    case 'python':
+      // Check for print statements
+      if (/print\(/.test(code)) {
+        suggestions.push({
+          type: 'info',
+          message: 'Consider using a logging library instead of print statements.'
+        });
+      }
+      
+      // Check for bare except clauses
+      if (/except:/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Avoid bare except clauses, specify the exceptions you want to catch.'
+        });
+      }
+      
+      // Check for f-strings availability
+      if (/"%\(/.test(code) || /{0}\.format/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using f-strings for string formatting (Python 3.6+).'
+        });
+      }
+      break;
+      
+    case 'java':
+    case 'c#':
+      // Check for empty catch blocks
+      if (/catch\s*\([^)]+\)\s*\{\s*\}/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Empty catch blocks suppress exceptions without handling them.'
+        });
+      }
+      
+      // Check for proper resource management
+      if (language.toLowerCase() === 'java' && 
+          /new FileInputStream|new BufferedReader/.test(code) && 
+          !(/try\s*\([^)]+\)/.test(code))) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Use try-with-resources for automatic resource management.'
+        });
+      }
+      break;
+      
+    case 'css':
+      // Check for !important
+      if (/!important/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Avoid using !important as it makes styles harder to override.'
+        });
+      }
+      
+      // Check for browser prefixes without standard property
+      const prefixedProps = code.match(/(-webkit-|-moz-|-ms-|-o-)[a-zA-Z-]+\s*:/g) || [];
+      prefixedProps.forEach(prop => {
+        const standardProp = prop.replace(/^(-webkit-|-moz-|-ms-|-o-)/, '');
+        if (!code.includes(standardProp)) {
+          suggestions.push({
+            type: 'info',
+            message: `Vendor prefix '${prop.trim()}' used without standard property.`
+          });
+        }
+      });
+      break;
+      
+    case 'html':
+      // Check for missing alt attributes on images
+      if (/<img(?![^>]*alt=)[^>]*>/i.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Images should have alt attributes for accessibility.'
+        });
+      }
+      
+      // Check for semantic HTML5 elements
+      if (!/<(header|nav|main|footer|section|article|aside)/i.test(code) && 
+          /<div class=["'](header|nav|main|footer|content|sidebar)/i.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using semantic HTML5 elements instead of divs with class names.'
+        });
+      }
+      break;
+      
+    case 'go':
+      // Check for error handling
+      if (/[^_]\s*:=.*\berr\b/.test(code) && !/if\s+err\s+!=\s+nil/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Error values should be checked.'
+        });
+      }
+      break;
+      
+    case 'swift':
+      // Check for force unwrapping
+      if (/\w+!\.|\w+!\[|\w+ = \w+!/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Avoid force unwrapping optionals when possible.'
+        });
+      }
+      break;
+  }
+  
+  return suggestions;
 }
+
+// Code improvement function - Suggests improvements for code
+function improveCode(code, language) {
+  let improved = code;
+  let improvements = [];
+  
+  // Language-specific improvements
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'typescript':
+      // Replace var with const where possible
+      if (/\bvar\b/.test(code)) {
+        improved = improved.replace(/var\s+([a-zA-Z0-9_$]+)(\s*=\s*[^;]+);/g, 'const $1$2;');
+        improvements.push("Replaced 'var' with 'const' for better variable scoping");
+      }
+      
+      // Add semicolons if missing
+      if (/}\n(let|const|var|function|class)/.test(code)) {
+        improved = improved.replace(/}(\s*\n\s*)(let|const|var|function|class)/g, '};\n$2');
+        improvements.push("Added missing semicolons");
+      }
+      
+      // Convert callbacks to async/await if possible
+      if (/\.then\(.*\)\.catch\(/.test(code) && !improved.includes('async') && !improved.includes('await')) {
+        // Simple conversion - won't work for all cases
+        improved = improved.replace(
+          /(\w+)\(([^)]*)\)\s*{\s*([^.]+)\.then\(\s*(?:\([^)]*\)|[^=>(]*)\s*=>\s*{([\s\S]*?)}\s*\)\.catch\(\s*(?:\([^)]*\)|[^=>(]*)\s*=>\s*{([\s\S]*?)}\s*\)/g,
+          'async $1($2) {\n  try {\n    const result = await $3;\n    $4\n  } catch (error) {\n    $5\n  }\n'
+        );
+        improvements.push("Converted Promise chains to async/await for better readability");
+      }
+      break;
+      
+    case 'python':
+      // Add docstrings if missing
+      if (/def\s+\w+\([^)]*\):\s*\n\s+[^\s#]/.test(code)) {
+        improved = improved.replace(
+          /(def\s+\w+\([^)]*\):\s*\n)(\s+[^\s#])/g, 
+          '$1$2    """\n    Description of function\n    """\n$2'
+        );
+        improvements.push("Added docstring templates to functions");
+      }
+      
+      // Convert old-style string formatting to f-strings
+      if (/%s|%d|%f/.test(code)) {
+        improved = improved.replace(
+          /(['"])([^'"]*%[sd]|%\([^)]+\)[sd])(['"])\s*%\s*\(/g,
+          'f$1$2$3.format('
+        );
+        improvements.push("Updated string formatting to use f-strings");
+      }
+      
+      // Add type hints
+      if (/def\s+\w+\([a-zA-Z0-9_, ]+\):/.test(code) && !/def\s+\w+\([a-zA-Z0-9_, :]+\)\s*->/.test(code)) {
+        improved = improved.replace(
+          /def\s+(\w+)\(([a-zA-Z0-9_, ]+)\):/g,
+          function(match, funcName, params) {
+            // Simple type hints - this is just an example
+            const paramWithTypes = params
+              .split(',')
+              .map(param => param.trim() + ': Any')
+              .join(', ');
+            return `def ${funcName}(${paramWithTypes}) -> Any:`;
+          }
+        );
+        improvements.push("Added type hints for better code clarity");
+      }
+      break;
+      
+    case 'css':
+      // Replace px with rem for better accessibility
+      if (/\d+px/.test(code)) {
+        improved = improved.replace(/(\d+)px/g, function(match, p1) {
+          return (parseInt(p1) / 16) + 'rem';
+        });
+        improvements.push("Converted px units to rem for better accessibility");
+      }
+      
+      // Add vendor prefixes
+      const cssProperties = {
+        'border-radius': ['-webkit-border-radius', '-moz-border-radius'],
+        'box-shadow': ['-webkit-box-shadow', '-moz-box-shadow'],
+        'transition': ['-webkit-transition', '-moz-transition', '-o-transition']
+      };
+      
+      Object.entries(cssProperties).forEach(([prop, prefixes]) => {
+        const regex = new RegExp(`(\\s|;)${prop}\\s*:([^;]+);`, 'g');
+        if (regex.test(code)) {
+          let prefixedCode = code;
+          prefixes.forEach(prefix => {
+            prefixedCode = prefixedCode.replace(
+              regex,
+              function(match, space, value) {
+                return `${space}${prefix}:${value};\n${space}${prop}:${value};`;
+              }
+            );
+          });
+          improved = prefixedCode;
+          improvements.push(`Added vendor prefixes for ${prop}`);
+        }
+      });
+      break;
+      
+    case 'html':
+      // Add missing alt attributes to images
+      if (/<img(?![^>]*alt=)[^>]*>/i.test(code)) {
+        improved = improved.replace(
+          /<img(?![^>]*alt=)([^>]*)>/gi,
+          '<img$1 alt="Image description">'
+        );
+        improvements.push("Added alt attributes to images for accessibility");
+      }
+      
+      // Replace non-semantic divs with semantic HTML
+      const semanticReplacements = {
+        '<div\\s+class=["\']header["\'][^>]*>': '<header>',
+        '<div\\s+class=["\']footer["\'][^>]*>': '<footer>',
+        '<div\\s+class=["\']nav(?:igation)?["\'][^>]*>': '<nav>',
+        '<div\\s+class=["\']content|main["\'][^>]*>': '<main>',
+        '<div\\s+class=["\']section["\'][^>]*>': '<section>',
+        '<div\\s+class=["\']article["\'][^>]*>': '<article>',
+        '<div\\s+class=["\']sidebar|aside["\'][^>]*>': '<aside>'
+      };
+      
+      Object.entries(semanticReplacements).forEach(([pattern, replacement]) => {
+        const closePattern = new RegExp(`${pattern.replace('>', '')}>[\\s\\S]*?</div>`, 'gi');
+        if (closePattern.test(code)) {
+          const semanticTag = replacement.replace('<', '</').replace('>', '>');
+          improved = improved.replace(
+            closePattern,
+            match => match.replace(new RegExp(pattern, 'i'), replacement).replace('</div>', semanticTag)
+          );
+          improvements.push(`Replaced div with semantic HTML5 elements`);
+        }
+      });
+      break;
+  }
+  
+  return {
+    improvedCode: improved,
+    improvements
+  };
+}
+
+// Code generator function - Generates code based on query and language
+function generateCode(query, language, projectType) {
+  // Detect intent from query
+  const intent = detectIntent(query);
+  
+  // Get language metadata
+  const langData = LANGUAGE_METADATA[language] || {
+    fileExtension: '.txt',
+    template: '',
+    common: []
+  };
+  
+  // Generate appropriate code based on intent
+  let generatedCode = '';
+  
+  switch (intent) {
+    case 'component':
+      if (language === 'React' || language === 'JavaScript' || language === 'TypeScript') {
+        generatedCode = generateReactComponent(query);
+      } else if (language === 'Vue') {
+        generatedCode = generateVueComponent(query);
+      } else if (language === 'Angular') {
+        generatedCode = generateAngularComponent(query);
+      } else if (language === 'Flutter') {
+        generatedCode = generateFlutterWidget(query);
+      } else if (language === 'Swift') {
+        generatedCode = generateSwiftUIView(query);
+      }
+      break;
+      
+    case 'api':
+      if (language === 'Node.js' || language === 'JavaScript') {
+        generatedCode = generateNodeAPI(query);
+      } else if (language === 'Python') {
+        generatedCode = generatePythonAPI(query);
+      } else if (language === 'Java') {
+        generatedCode = generateJavaAPI(query);
+      } else if (language === 'Go') {
+        generatedCode = generateGoAPI(query);
+      }
+      break;
+      
+    case 'database':
+      if (language === 'SQL') {
+        generatedCode = generateSQLQuery(query);
+      } else if (language === 'MongoDB' || language === 'JavaScript') {
+        generatedCode = generateMongoDBQuery(query);
+      }
+      break;
+      
+    default:
+      // Generate a basic template if no specific intent is detected
+      generatedCode = langData.template || '// Generated code\n';
+  }
+  
+  return generatedCode;
+}
+
+// Helper function to detect intent from query
+function detectIntent(query) {
+  query = query.toLowerCase();
+  
+  if (query.includes('component') || query.includes('ui') || query.includes('interface')) {
+    return 'component';
+  } else if (query.includes('api') || query.includes('endpoint') || query.includes('route')) {
+    return 'api';
+  } else if (query.includes('database') || query.includes('query') || query.includes('sql')) {
+    return 'database';
+  } else if (query.includes('function') || query.includes('method')) {
+    return 'function';
+  } else if (query.includes('class') || query.includes('object')) {
+    return 'class';
+  } else {
+    return 'general';
+  }
+}
+
+// Component generators
+function generateReactComponent(query) {
+  return `import React, { useState, useEffect } from 'react';
+
+function MyComponent() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    // Fetch data or perform side effects here
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+  
+  return (
+    <div className="my-component">
+      <h2>My Component</h2>
+      
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {data.map(item => (
+            <li key={item.id}>
+              {item.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default MyComponent;`;
+}
+
+function generateVueComponent(query) {
+  return `<template>
+  <div class="my-component">
+    <h2>My Component</h2>
+    
+    <p v-if="loading">Loading...</p>
+    
+    <ul v-else>
+      <li v-for="item in data" :key="item.id">
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MyComponent',
+  data() {
+    return {
+      data: [],
+      loading: false
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true;
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const result = await response.json();
+        this.data = result;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.my-component {
+  padding: 1rem;
+}
+</style>`;
+}
+
+function generateAngularComponent(query) {
+  return `import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+interface Item {
+  id: number;
+  name: string;
+}
+
+@Component({
+  selector: 'app-my-component',
+  template: \`
+    <div class="my-component">
+      <h2>My Component</h2>
+      
+      <p *ngIf="loading">Loading...</p>
+      
+      <ul *ngIf="!loading">
+        <li *ngFor="let item of data">
+          {{ item.name }}
+        </li>
+      </ul>
+    </div>
+  \`,
+  styles: [\`
+    .my-component {
+      padding: 1rem;
+    }
+  \`]
+})
+export class MyComponent implements OnInit {
+  data: Item[] = [];
+  loading = false;
+  
+  constructor(private http: HttpClient) {}
+  
+  ngOnInit(): void {
+    this.fetchData();
+  }
+  
+  fetchData(): void {
+    this.loading = true;
+    this.http.get<Item[]>('https://api.example.com/data')
+      .subscribe({
+        next: (result) => {
+          this.data = result;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.loading = false;
+        }
+      });
+  }
+}`;
+}
+
+function generateFlutterWidget(query) {
+  return `import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({Key? key}) : super(key: key);
+
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  List<dynamic> data = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+    
+    try {
+      final response = await http.get(Uri.parse('https://api.example.com/data'));
+      
+      if (response.statusCode == 200) {
+        setState(() {
+          data = jsonDecode(response.body);
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'My Widget',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final item = data[index];
+                      return ListTile(
+                        title: Text(item['name']),
+                      );
+                    },
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+}`;
+}
+
+function generateSwiftUIView(query) {
+  return `import SwiftUI
+
+struct Item: Codable, Identifiable {
+    let id: Int
+    let name: String
+}
+
+class DataFetcher: ObservableObject {
+    @Published var items = [Item]()
+    @Published var isLoading = false
+    
+    func fetchData() {
+        isLoading = true
+        
+        guard let url = URL(string: "https://api.example.com/data") else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+                
+                if let data = data {
+                    do {
+                        let decodedData = try JSONDecoder().decode([Item].self, from: data)
+                        self.items = decodedData
+                    } catch {
+                        print("Error decoding data: \(error)")
+                    }
+                }
+            }
+        }.resume()
+    }
+}
+
+struct MyView: View {
+    @StateObject private var dataFetcher = DataFetcher()
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("My View")
+                .font(.title)
+                .padding(.bottom)
+            
+            if dataFetcher.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                List(dataFetcher.items) { item in
+                    Text(item.name)
+                }
+            }
+        }
+        .padding()
+        .onAppear {
+            dataFetcher.fetchData()
+        }
+    }
+}`;
+}
+
+// API generators
+function generateNodeAPI(query) {
+  return `const express = require, form_data['email']):
+        errors['email'] = 'Invalid email address'
+    
+    # Password validation
+    if 'password' not in form_data or not form_data['password']:
+        errors['password'] = 'Password is required'
+    elif len(form_data['password']) < 8:
+        errors['password'] = 'Password must be at least 8 characters'
+    elif not (re.search(r'[a-z]', form_data['password']) and 
+             re.search(r'[A-Z]', form_data['password']) and 
+             re.search(r'[0-9]', form_data['password'])):
+        errors['password'] = 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+    
+    # Confirm password validation
+    if 'password' in form_data and 'confirm_password' in form_data and form_data['password'] != form_data['confirm_password']:
+        errors['confirm_password'] = 'Passwords do not match'
+    
+    is_valid = len(errors) == 0
+    return (is_valid, errors)`;
+
+    default:
+      return '// Form validation code for this language not available';
+  }
+}
+
+function generateAuthentication(language) {
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'node.js':
+      return `const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
+
+// @desc    Register user
+// @route   POST /api/auth/register
+exports.register = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+    
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword
+    });
+    
+    // Generate JWT token
+    const token = generateToken(user._id);
+    
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Login user
+// @route   POST /api/auth/login
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    
+    // Check if password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    
+    // Generate JWT token
+    const token = generateToken(user._id);
+    
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Generate JWT token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d'
+  });
+};
+
+// Middleware to protect routes
+exports.protect = async (req, res, next) => {
+  let token;
+  
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      // Get token from header
+      token = req.headers.authorization.split(' ')[1];
+      
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Get user from the token
+      req.user = await User.findById(decoded.id).select('-password');
+      
+      next();
+    } catch (error) {
+      res.status(401).json({ message: 'Not authorized, token failed' });
+    }
+  }
+  
+  if (!token) {
+    res.status(401).json({ message: 'Not authorized, no token' });
+  }
+};`;
+
+    case 'python':
+      return `import jwt
+from datetime import datetime, timedelta
+from flask import request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
+from app import app, db
+from app.models import User
+
+# Register user
+@app.route('/api/auth/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    
+    # Check if user already exists
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({'message': 'User already exists'}), 400
+    
+    # Hash password
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+    
+    # Create new user
+    new_user = User(
+        name=data['name'],
+        email=data['email'],
+        password=hashed_password
+    )
+    
+    # Save user to database
+    db.session.add(new_user)
+    db.session.commit()
+    
+    # Generate token
+    token = generate_token(new_user.id)
+    
+    return jsonify({
+        'id': new_user.id,
+        'name': new_user.name,
+        'email': new_user.email,
+        'token': token
+    }), 201
+
+# Login user
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    
+    # Find user by email
+    user = User.query.filter_by(email=data['email']).first()
+    
+    if not user or not check_password_hash(user.password, data['password']):
+        return jsonify({'message': 'Invalid credentials'}), 401
+    
+    # Generate token
+    token = generate_token(user.id)
+    
+    return jsonify({
+        'id': user.id,
+        'name': user.name,
+        'email': user.email,
+        'token': token
+    })
+
+# Generate JWT token
+def generate_token(user_id):
+    payload = {
+        'exp': datetime.utcnow() + timedelta(days=30),
+        'iat': datetime.utcnow(),
+        'sub': user_id
+    }
+    return jwt.encode(
+        payload,
+        app.config.get('SECRET_KEY'),
+        algorithm='HS256'
+    )
+
+# Auth middleware
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            if auth_header.startswith('Bearer '):
+                token = auth_header.split(' ')[1]
+        
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 401
+        
+        try:
+            payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
+            current_user = User.query.filter_by(id=payload['sub']).first()
+        except:
+            return jsonify({'message': 'Token is invalid'}), 401
+        
+        return f(current_user, *args, **kwargs)
+    
+    return decorated`;
+
+    default:
+      return '// Authentication code for this language not available';
+  }
+}
+
+// Export functionality for use in other components (if needed)
+// These would be used in a real implementation, but are not required for this demo
+// export { analyzeCode, improveCode, generateCode };(\'express\');\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});',
+    frameworks: ['Express', 'Koa', 'Nest.js'],
+    common: ['API routes', 'Authentication', 'Database integration']
+  },
+  Python: {
+    fileExtension: '.py',
+    template: '# Python code\n',
+    frameworks: ['Django', 'Flask', 'FastAPI', 'TensorFlow', 'PyTorch'],
+    common: ['Data processing', 'Web scraping', 'API integration']
+  },
+  Java: {
+    fileExtension: '.java',
+    template: 'public class Main {\n  public static void main(String[] args) {\n    \n  }\n}',
+    frameworks: ['Spring Boot', 'Hibernate', 'Android'],
+    common: ['Object-oriented design', 'Concurrency', 'Enterprise applications']
+  },
+  'C#': {
+    fileExtension: '.cs',
+    template: 'using System;\n\nnamespace MyApp {\n  class Program {\n    static void Main(string[] args) {\n      \n    }\n  }\n}',
+    frameworks: ['.NET Core', 'ASP.NET', 'Entity Framework'],
+    common: ['LINQ', 'Async/await', 'Windows apps']
+  },
+  Go: {
+    fileExtension: '.go',
+    template: 'package main\n\nimport "fmt"\n\nfunc main() {\n  \n}',
+    common: ['Concurrency', 'Microservices', 'Web servers']
+  },
+  // Data Science
+  R: {
+    fileExtension: '.R',
+    template: '# R script\n',
+    common: ['Statistical analysis', 'Data visualization', 'Machine learning']
+  },
+  SQL: {
+    fileExtension: '.sql',
+    template: '-- SQL query\n',
+    common: ['Queries', 'Database design', 'Performance optimization']
+  },
+  // Game Development
+  'Unity/C#': {
+    fileExtension: '.cs',
+    template: 'using UnityEngine;\n\npublic class PlayerController : MonoBehaviour {\n  void Start() {\n    \n  }\n\n  void Update() {\n    \n  }\n}',
+    common: ['Game mechanics', 'Physics', 'Animation']
+  },
+  'Unreal/C++': {
+    fileExtension: '.cpp',
+    template: '#include "MyClass.h"\n\nAMyClass::AMyClass() {\n  \n}\n\nvoid AMyClass::BeginPlay() {\n  Super::BeginPlay();\n}',
+    common: ['Blueprints', 'Character controllers', 'Game AI']
+  },
+  // DevOps
+  Docker: {
+    fileExtension: 'Dockerfile',
+    template: 'FROM node:14\nWORKDIR /app\nCOPY . .\nRUN npm install\nEXPOSE 3000\nCMD ["npm", "start"]',
+    common: ['Containerization', 'Multi-stage builds', 'Docker Compose']
+  },
+  Kubernetes: {
+    fileExtension: '.yaml',
+    template: 'apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: my-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: my-app\n  template:\n    metadata:\n      labels:\n        app: my-app\n    spec:\n      containers:\n      - name: my-app\n        image: my-app:latest',
+    common: ['Pod management', 'Service discovery', 'Helm charts']
+  },
+  Terraform: {
+    fileExtension: '.tf',
+    template: 'provider "aws" {\n  region = "us-west-2"\n}\n\nresource "aws_instance" "example" {\n  ami           = "ami-0c55b159cbfafe1f0"\n  instance_type = "t2.micro"\n}',
+    common: ['Infrastructure as code', 'Cloud providers', 'State management']
+  },
+  // Blockchain
+  Solidity: {
+    fileExtension: '.sol',
+    template: 'pragma solidity ^0.8.0;\n\ncontract MyContract {\n  \n}',
+    common: ['Smart contracts', 'Ethereum', 'Token standards']
+  }
+};
+
+// Code analysis function - Analyzes code and provides suggestions
+function analyzeCode(code, language) {
+  let suggestions = [];
+  
+  // Common issues across languages
+  if (code.includes('TODO') || code.includes('FIXME')) {
+    suggestions.push({
+      type: 'info',
+      message: 'There are TODO comments in the code that should be addressed.'
+    });
+  }
+  
+  // Check for common issues in specific languages
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'typescript':
+      // Check for console.log statements
+      if (/console\.log\(/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Remove console.log statements before production deployment.'
+        });
+      }
+      
+      // Check for var usage
+      if (/\bvar\b/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using const or let instead of var for better scoping.'
+        });
+      }
+      
+      // Check for potential memory leaks in event listeners
+      if (/addEventListener\(/.test(code) && !/removeEventListener\(/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Event listeners are added but not removed, which could cause memory leaks.'
+        });
+      }
+      
+      // Check for unused variables
+      const varDeclarations = code.match(/(?:let|const|var)\s+([a-zA-Z0-9_$]+)/g) || [];
+      varDeclarations.forEach(declaration => {
+        const varName = declaration.split(/\s+/)[1];
+        // Simple check - not perfect but catches obvious cases
+        const varNameRegex = new RegExp('\\b' + varName + '\\b', 'g');
+        const occurrences = (code.match(varNameRegex) || []).length;
+        if (occurrences <= 1) {
+          suggestions.push({
+            type: 'info',
+            message: `Variable '${varName}' might be unused.`
+          });
+        }
+      });
+      break;
+      
+    case 'python':
+      // Check for print statements
+      if (/print\(/.test(code)) {
+        suggestions.push({
+          type: 'info',
+          message: 'Consider using a logging library instead of print statements.'
+        });
+      }
+      
+      // Check for bare except clauses
+      if (/except:/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Avoid bare except clauses, specify the exceptions you want to catch.'
+        });
+      }
+      
+      // Check for f-strings availability
+      if (/"%\(/.test(code) || /{0}\.format/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using f-strings for string formatting (Python 3.6+).'
+        });
+      }
+      break;
+      
+    case 'java':
+    case 'c#':
+      // Check for empty catch blocks
+      if (/catch\s*\([^)]+\)\s*\{\s*\}/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Empty catch blocks suppress exceptions without handling them.'
+        });
+      }
+      
+      // Check for proper resource management
+      if (language.toLowerCase() === 'java' && 
+          /new FileInputStream|new BufferedReader/.test(code) && 
+          !(/try\s*\([^)]+\)/.test(code))) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Use try-with-resources for automatic resource management.'
+        });
+      }
+      break;
+      
+    case 'css':
+      // Check for !important
+      if (/!important/.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Avoid using !important as it makes styles harder to override.'
+        });
+      }
+      
+      // Check for browser prefixes without standard property
+      const prefixedProps = code.match(/(-webkit-|-moz-|-ms-|-o-)[a-zA-Z-]+\s*:/g) || [];
+      prefixedProps.forEach(prop => {
+        const standardProp = prop.replace(/^(-webkit-|-moz-|-ms-|-o-)/, '');
+        if (!code.includes(standardProp)) {
+          suggestions.push({
+            type: 'info',
+            message: `Vendor prefix '${prop.trim()}' used without standard property.`
+          });
+        }
+      });
+      break;
+      
+    case 'html':
+      // Check for missing alt attributes on images
+      if (/<img(?![^>]*alt=)[^>]*>/i.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Images should have alt attributes for accessibility.'
+        });
+      }
+      
+      // Check for semantic HTML5 elements
+      if (!/<(header|nav|main|footer|section|article|aside)/i.test(code) && 
+          /<div class=["'](header|nav|main|footer|content|sidebar)/i.test(code)) {
+        suggestions.push({
+          type: 'suggestion',
+          message: 'Consider using semantic HTML5 elements instead of divs with class names.'
+        });
+      }
+      break;
+      
+    case 'go':
+      // Check for error handling
+      if (/[^_]\s*:=.*\berr\b/.test(code) && !/if\s+err\s+!=\s+nil/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Error values should be checked.'
+        });
+      }
+      break;
+      
+    case 'swift':
+      // Check for force unwrapping
+      if (/\w+!\.|\w+!\[|\w+ = \w+!/.test(code)) {
+        suggestions.push({
+          type: 'warning',
+          message: 'Avoid force unwrapping optionals when possible.'
+        });
+      }
+      break;
+  }
+  
+  return suggestions;
+}
+
+// Code improvement function - Suggests improvements for code
+function improveCode(code, language) {
+  let improved = code;
+  let improvements = [];
+  
+  // Language-specific improvements
+  switch (language.toLowerCase()) {
+    case 'javascript':
+    case 'typescript':
+      // Replace var with const where possible
+      if (/\bvar\b/.test(code)) {
+        improved = improved.replace(/var\s+([a-zA-Z0-9_$]+)(\s*=\s*[^;]+);/g, 'const $1$2;');
+        improvements.push("Replaced 'var' with 'const' for better variable scoping");
+      }
+      
+      // Add semicolons if missing
+      if (/}\n(let|const|var|function|class)/.test(code)) {
+        improved = improved.replace(/}(\s*\n\s*)(let|const|var|function|class)/g, '};\n$2');
+        improvements.push("Added missing semicolons");
+      }
+      
+      // Convert callbacks to async/await if possible
+      if (/\.then\(.*\)\.catch\(/.test(code) && !improved.includes('async') && !improved.includes('await')) {
+        // Simple conversion - won't work for all cases
+        improved = improved.replace(
+          /(\w+)\(([^)]*)\)\s*{\s*([^.]+)\.then\(\s*(?:\([^)]*\)|[^=>(]*)\s*=>\s*{([\s\S]*?)}\s*\)\.catch\(\s*(?:\([^)]*\)|[^=>(]*)\s*=>\s*{([\s\S]*?)}\s*\)/g,
+          'async $1($2) {\n  try {\n    const result = await $3;\n    $4\n  } catch (error) {\n    $5\n  }\n'
+        );
+        improvements.push("Converted Promise chains to async/await for better readability");
+      }
+      break;
+      
+    case 'python':
+      // Add docstrings if missing
+      if (/def\s+\w+\([^)]*\):\s*\n\s+[^\s#]/.test(code)) {
+        improved = improved.replace(
+          /(def\s+\w+\([^)]*\):\s*\n)(\s+[^\s#])/g, 
+          '$1$2    """\n    Description of function\n    """\n$2'
+        );
+        improvements.push("Added docstring templates to functions");
+      }
+      
+      // Convert old-style string formatting to f-strings
+      if (/%s|%d|%f/.test(code)) {
+        improved = improved.replace(
+          /(['"])([^'"]*%[sd]|%\([^)]+\)[sd])(['"])\s*%\s*\(/g,
+          'f$1$2$3.format('
+        );
+        improvements.push("Updated string formatting to use f-strings");
+      }
+      
+      // Add type hints
+      if (/def\s+\w+\([a-zA-Z0-9_, ]+\):/.test(code) && !/def\s+\w+\([a-zA-Z0-9_, :]+\)\s*->/.test(code)) {
+        improved = improved.replace(
+          /def\s+(\w+)\(([a-zA-Z0-9_, ]+)\):/g,
+          function(match, funcName, params) {
+            // Simple type hints - this is just an example
+            const paramWithTypes = params
+              .split(',')
+              .map(param => param.trim() + ': Any')
+              .join(', ');
+            return `def ${funcName}(${paramWithTypes}) -> Any:`;
+          }
+        );
+        improvements.push("Added type hints for better code clarity");
+      }
+      break;
+      
+    case 'css':
+      // Replace px with rem for better accessibility
+      if (/\d+px/.test(code)) {
+        improved = improved.replace(/(\d+)px/g, function(match, p1) {
+          return (parseInt(p1) / 16) + 'rem';
+        });
+        improvements.push("Converted px units to rem for better accessibility");
+      }
+      
+      // Add vendor prefixes
+      const cssProperties = {
+        'border-radius': ['-webkit-border-radius', '-moz-border-radius'],
+        'box-shadow': ['-webkit-box-shadow', '-moz-box-shadow'],
+        'transition': ['-webkit-transition', '-moz-transition', '-o-transition']
+      };
+      
+      Object.entries(cssProperties).forEach(([prop, prefixes]) => {
+        const regex = new RegExp(`(\\s|;)${prop}\\s*:([^;]+);`, 'g');
+        if (regex.test(code)) {
+          let prefixedCode = code;
+          prefixes.forEach(prefix => {
+            prefixedCode = prefixedCode.replace(
+              regex,
+              function(match, space, value) {
+                return `${space}${prefix}:${value};\n${space}${prop}:${value};`;
+              }
+            );
+          });
+          improved = prefixedCode;
+          improvements.push(`Added vendor prefixes for ${prop}`);
+        }
+      });
+      break;
+      
+    case 'html':
+      // Add missing alt attributes to images
+      if (/<img(?![^>]*alt=)[^>]*>/i.test(code)) {
+        improved = improved.replace(
+          /<img(?![^>]*alt=)([^>]*)>/gi,
+          '<img$1 alt="Image description">'
+        );
+        improvements.push("Added alt attributes to images for accessibility");
+      }
+      
+      // Replace non-semantic divs with semantic HTML
+      const semanticReplacements = {
+        '<div\\s+class=["\']header["\'][^>]*>': '<header>',
+        '<div\\s+class=["\']footer["\'][^>]*>': '<footer>',
+        '<div\\s+class=["\']nav(?:igation)?["\'][^>]*>': '<nav>',
+        '<div\\s+class=["\']content|main["\'][^>]*>': '<main>',
+        '<div\\s+class=["\']section["\'][^>]*>': '<section>',
+        '<div\\s+class=["\']article["\'][^>]*>': '<article>',
+        '<div\\s+class=["\']sidebar|aside["\'][^>]*>': '<aside>'
+      };
+      
+      Object.entries(semanticReplacements).forEach(([pattern, replacement]) => {
+        const closePattern = new RegExp(`${pattern.replace('>', '')}>[\\s\\S]*?</div>`, 'gi');
+        if (closePattern.test(code)) {
+          const semanticTag = replacement.replace('<', '</').replace('>', '>');
+          improved = improved.replace(
+            closePattern,
+            match => match.replace(new RegExp(pattern, 'i'), replacement).replace('</div>', semanticTag)
+          );
+          improvements.push(`Replaced div with semantic HTML5 elements`);
+        }
+      });
+      break;
+  }
+  
+  return {
+    improvedCode: improved,
+    improvements
+  };
+}
+
+// Code generator function - Generates code based on query and language
+function generateCode(query, language, projectType) {
+  // Detect intent from query
+  const intent = detectIntent(query);
+  
+  // Get language metadata
+  const langData = LANGUAGE_METADATA[language] || {
+    fileExtension: '.txt',
+    template: '',
+    common: []
+  };
+  
+  // Generate appropriate code based on intent
+  let generatedCode = '';
+  
+  switch (intent) {
+    case 'component':
+      if (language === 'React' || language === 'JavaScript' || language === 'TypeScript') {
+        generatedCode = generateReactComponent(query);
+      } else if (language === 'Vue') {
+        generatedCode = generateVueComponent(query);
+      } else if (language === 'Angular') {
+        generatedCode = generateAngularComponent(query);
+      } else if (language === 'Flutter') {
+        generatedCode = generateFlutterWidget(query);
+      } else if (language === 'Swift') {
+        generatedCode = generateSwiftUIView(query);
+      }
+      break;
+      
+    case 'api':
+      if (language === 'Node.js' || language === 'JavaScript') {
+        generatedCode = generateNodeAPI(query);
+      } else if (language === 'Python') {
+        generatedCode = generatePythonAPI(query);
+      } else if (language === 'Java') {
+        generatedCode = generateJavaAPI(query);
+      } else if (language === 'Go') {
+        generatedCode = generateGoAPI(query);
+      }
+      break;
+      
+    case 'database':
+      if (language === 'SQL') {
+        generatedCode = generateSQLQuery(query);
+      } else if (language === 'MongoDB' || language === 'JavaScript') {
+        generatedCode = generateMongoDBQuery(query);
+      }
+      break;
+      
+    default:
+      // Generate a basic template if no specific intent is detected
+      generatedCode = langData.template || '// Generated code\n';
+  }
+  
+  return generatedCode;
+}
+
+// Helper function to detect intent from query
+function detectIntent(query) {
+  query = query.toLowerCase();
+  
+  if (query.includes('component') || query.includes('ui') || query.includes('interface')) {
+    return 'component';
+  } else if (query.includes('api') || query.includes('endpoint') || query.includes('route')) {
+    return 'api';
+  } else if (query.includes('database') || query.includes('query') || query.includes('sql')) {
+    return 'database';
+  } else if (query.includes('function') || query.includes('method')) {
+    return 'function';
+  } else if (query.includes('class') || query.includes('object')) {
+    return 'class';
+  } else {
+    return 'general';
+  }
+}
+
+// Component generators
+function generateReactComponent(query) {
+  return `import React, { useState, useEffect } from 'react';
+
+function MyComponent() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    // Fetch data or perform side effects here
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+  
+  return (
+    <div className="my-component">
+      <h2>My Component</h2>
+      
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {data.map(item => (
+            <li key={item.id}>
+              {item.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default MyComponent;`;
+}
+
+function generateVueComponent(query) {
+  return `<template>
+  <div class="my-component">
+    <h2>My Component</h2>
+    
+    <p v-if="loading">Loading...</p>
+    
+    <ul v-else>
+      <li v-for="item in data" :key="item.id">
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MyComponent',
+  data() {
+    return {
+      data: [],
+      loading: false
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true;
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const result = await response.json();
+        this.data = result;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.my-component {
+  padding: 1rem;
+}
+</style>`;
+}
+
+function generateAngularComponent(query) {
+  return `import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+interface Item {
+  id: number;
+  name: string;
+}
+
+@Component({
+  selector: 'app-my-component',
+  template: \`
+    <div class="my-component">
+      <h2>My Component</h2>
+      
+      <p *ngIf="loading">Loading...</p>
+      
+      <ul *ngIf="!loading">
+        <li *ngFor="let item of data">
+          {{ item.name }}
+        </li>
+      </ul>
+    </div>
+  \`,
+  styles: [\`
+    .my-component {
+      padding: 1rem;
+    }
+  \`]
+})
+export class MyComponent implements OnInit {
+  data: Item[] = [];
+  loading = false;
+  
+  constructor(private http: HttpClient) {}
+  
+  ngOnInit(): void {
+    this.fetchData();
+  }
+  
+  fetchData(): void {
+    this.loading = true;
+    this.http.get<Item[]>('https://api.example.com/data')
+      .subscribe({
+        next: (result) => {
+          this.data = result;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.loading = false;
+        }
+      });
+  }
+}`;
+}
+
+function generateFlutterWidget(query) {
+  return `import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({Key? key}) : super(key: key);
+
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  List<dynamic> data = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+    
+    try {
+      final response = await http.get(Uri.parse('https://api.example.com/data'));
+      
+      if (response.statusCode == 200) {
+        setState(() {
+          data = jsonDecode(response.body);
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'My Widget',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final item = data[index];
+                      return ListTile(
+                        title: Text(item['name']),
+                      );
+                    },
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+}`;
+}
+
+function generateSwiftUIView(query) {
+  return `import SwiftUI
+
+struct Item: Codable, Identifiable {
+    let id: Int
+    let name: String
+}
+
+class DataFetcher: ObservableObject {
+    @Published var items = [Item]()
+    @Published var isLoading = false
+    
+    func fetchData() {
+        isLoading = true
+        
+        guard let url = URL(string: "https://api.example.com/data") else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+                
+                if let data = data {
+                    do {
+                        let decodedData = try JSONDecoder().decode([Item].self, from: data)
+                        self.items = decodedData
+                    } catch {
+                        print("Error decoding data: \(error)")
+                    }
+                }
+            }
+        }.resume()
+    }
+}
+
+struct MyView: View {
+    @StateObject private var dataFetcher = DataFetcher()
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("My View")
+                .font(.title)
+                .padding(.bottom)
+            
+            if dataFetcher.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                List(dataFetcher.items) { item in
+                    Text(item.name)
+                }
+            }
+        }
+        .padding()
+        .onAppear {
+            dataFetcher.fetchData()
+        }
+    }
+}`;
+}
+
+// API generators
+function generateNodeAPI(query) {
+  return `const express = require
