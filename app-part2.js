@@ -1,99 +1,4 @@
-// File selection
-  fileItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const fileId = this.getAttribute('data-file-id');
-      currentFileId = fileId;
-      editorContent.textContent = files[fileId].content;
-      currentFilename.textContent = files[fileId].name;
-      
-      // Enable editor tab
-      editorTab.removeAttribute('disabled');
-      
-      // Switch to editor tab
-      setActiveTab('editor');
-    });
-  });
-
-  // Add new file button
-  addFileButton.addEventListener('click', function() {
-    const fileId = `file${fileCounter++}`;
-    const fileName = `new_file_${fileCounter - 4}.js`;
-    
-    // Add to files object
-    files[fileId] = {
-      name: fileName,
-      language: 'javascript',
-      content: '// Add your code here\n\n'
-    };
-    
-    // Create new file item element
-    const fileItem = document.createElement('div');
-    fileItem.className = 'file-item';
-    fileItem.setAttribute('data-file-id', fileId);
-    fileItem.innerHTML = `
-      <div class="file-info">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-          <polyline points="10 9 9 9 8 9"></polyline>
-        </svg>
-        <span class="file-name">${fileName}</span>
-        <span class="file-language">javascript</span>
-      </div>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="7" y1="17" x2="17" y2="7"></line>
-        <polyline points="7 7 17 7 17 17"></polyline>
-      </svg>
-    `;
-    
-    // Add event listener
-    fileItem.addEventListener('click', function() {
-      currentFileId = fileId;
-      editorContent.textContent = files[fileId].content;
-      currentFilename.textContent = files[fileId].name;
-      
-      // Enable editor tab
-      editorTab.removeAttribute('disabled');
-      
-      // Switch to editor tab
-      setActiveTab('editor');
-    });
-    
-    // Add to DOM
-    document.getElementById('file-list').appendChild(fileItem);
-    
-    // Select the new file
-    currentFileId = fileId;
-    editorContent.textContent = files[fileId].content;
-    currentFilename.textContent = files[fileId].name;
-    
-    // Enable editor tab
-    editorTab.removeAttribute('disabled');
-    
-    // Switch to editor tab
-    setActiveTab('editor');
-  });
-
-  // Copy code button
-  copyCodeButton.addEventListener('click', function() {
-    navigator.clipboard.writeText(editorContent.textContent)
-      .then(() => {
-        // Show temporary success message
-        const originalText = this.innerHTML;
-        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
-        
-        setTimeout(() => {
-          this.innerHTML = originalText;
-        }, 2000);
-      })
-      .catch(err => {
-        console.error('Failed to copy: ', err);
-      });
-  });
-
-  // Helper function to format code blocks
+// Helper function to format code blocks
   function formatCodeBlock(code, language) {
     return `<div class="code-block">
       <div class="code-header">
@@ -132,4 +37,61 @@
     }
     
     return html;
+  }
+
+  // Add user message to chat
+  function addUserMessage(text) {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user';
+    messageDiv.innerHTML = `
+      <div class="message-bubble">
+        <div class="message-header">
+          <span class="font-semibold">You</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="message-content">
+          ${text}
+        </div>
+        <div class="message-timestamp">
+          ${timestamp}
+        </div>
+      </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  // Add bot message to chat
+  function addBotMessage(text) {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message bot';
+    messageDiv.innerHTML = `
+      <div class="message-bubble">
+        <div class="message-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="10" r="3"></circle>
+            <path d="M7 16.3c0-1 2.5-1.9 5-1.9s5 .9 5 1.9"></path>
+          </svg>
+          <span class="font-semibold">Coding Assistant</span>
+        </div>
+        <div class="message-content">
+          ${renderMessageContent(text)}
+        </div>
+        <div class="message-timestamp">
+          ${timestamp}
+        </div>
+      </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
